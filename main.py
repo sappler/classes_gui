@@ -12,17 +12,23 @@ def close_window():
     window.destroy()
     exit()    
 
+#class that holds all window elements. this makes it easier to delete/create everything fresh
 class Elements:
+    #opens webpage for current class
     def goto(self):
         webbrowser.open(self.link,new=1)
-    
+        
+    #searches for class in database and displays its info when submit button is clicked
     def click(self,event=None):
+            #retrieves text box string, splits subject/number
             text=self.textentry.get().split(' ')
             try:
                 entered_sub=text[0].upper()
                 entered_num=text[1].upper()
+                #tries to get class from csv
                 qstring=('subject=="{}" and number=="{}"')
                 row=file.query(qstring.format(entered_sub,entered_num))
+                #inserts info into textboxes, changes link to go to that class's page
                 self.name.configure(text=row['title'].values[0])
                 self.desc.configure(text=row['description'].values[0])
                 self.link='https://courses.soe.ucsc.edu/courses/' + entered_sub + entered_num
@@ -31,15 +37,27 @@ class Elements:
                 self.name.configure(text="That is not a class at UCSC.")
                 self.clear()
                 return
+            
+            #gets class quarters, if possible
             try:
-                self.quarters.configure(text=row['quarters'].values[0])
-                self.quarters_label.configure(text='Quarters:')
+                temp=row['quarters'].values[0]
+                if temp.notnull():
+                    self.quarters.configure(text=temp)
+                    self.quarters_label.configure(text='Quarters:')
+                else:
+                    raise Exception('no quarter data')
             except:
                 self.quarters.configure(text='')
                 self.quarters_label.configure(text='')
+            
+            #fetches instructors, if possible
             try: 
-                self.instructors.configure(text=row['instructors'].values[0])
-                self.instructors_label.configure(text='Instructors:')
+                temp=row['instructors'].values[0]
+                if temp.notnull():
+                    self.instructors.configure(text=temp)
+                    self.instructors_label.configure(text='Instructors:')
+                else:
+                    raise Exception('no instr data')
             except:
                 self.instructors.configure(text='')
                 self.instructors_label.configure(text='')
