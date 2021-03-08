@@ -92,7 +92,7 @@ class Elements:
         
         
         #opens image as pillow object
-        pic_temp=Image.open("smal.png")
+        pic_temp=Image.open("images/smal.png")
         pic_temp=pic_temp.resize((175,175), Image.ANTIALIAS)
         self.pic=ImageTk.PhotoImage(pic_temp)
         #puts image in 'frame' (has to be done to display PIL image
@@ -123,7 +123,7 @@ class Elements:
 if __name__=="__main__":
     pd.set_option("display.max_rows", None, "display.max_columns", None)
     pd.set_option('display.max_colwidth', None)
-    file=pd.read_csv('db.csv',sep='#',engine='python',quoting=3)
+    file=pd.read_csv('database/db.csv',sep='#',engine='python',quoting=3)
     window=Tk()
     window.title("UCSC Class Lookup")
     #width/height
